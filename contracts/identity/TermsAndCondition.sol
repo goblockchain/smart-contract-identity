@@ -1,16 +1,21 @@
 pragma solidity 0.4.24;
 
 import "../Collaborator.sol/";
+import "../util/StringUtils.sol";
 
 contract TermsAndCondition is Collaborator {
-    string public hash;
-    event TermsAndConditionChanged(address sender, uint256 time);
+    using StringUtils for string;
+    string[] public hashTerms;
+    string public validHash;
+    event TermsAndConditionChanged(address sender, uint256 time, string validHash );
 
     function setTermsAndCondition(string _hash) public onlyAdminOrAdvisor {
-        hash = _hash;
-        emit TermsAndConditionChanged(msg.sender, now);
+        hashTerms.push(_hash);
+        validHash = _hash;
+        emit TermsAndConditionChanged(msg.sender, now, validHash);
     }
-    function getHash() public view returns(string) {
-        return hash;
-    }
+
+    function isValidHash(string _hash) public returns(bool) {
+        return validHash.equal(_hash);
+    }    
 }

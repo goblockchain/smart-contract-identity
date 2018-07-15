@@ -19,14 +19,10 @@ contract Collaborator is Ownable, RBAC {
     /**
     * @dev constructor. Sets msg.sender as admin by default
     */
-    constructor(address[] _advisors) public
+    constructor() public
     {
         addRole(msg.sender, ROLE_ADMIN);
-        addRole(msg.sender, ROLE_ADVISOR);
-
-        for (uint256 i = 0; i < _advisors.length; i++) {
-            addRole(_advisors[i], ROLE_ADVISOR);
-        }        
+        addRole(msg.sender, ROLE_ADVISOR);     
     }
 
     /**
@@ -71,6 +67,17 @@ contract Collaborator is Ownable, RBAC {
         addRole(collaborator, ROLE_COLLABORATOR);
         emit NewCollaborator(collaborator);
     }  
+
+    /**
+    * @dev addAdvisors. add address of advisors
+    * @param _advisors array with the address of advisors
+    */
+    function addAdvisors(address[] _advisors) public onlyAdminOrAdvisor
+    {
+        for (uint256 i = 0; i < _advisors.length; i++) {
+            addRole(_advisors[i], ROLE_ADVISOR);
+        }        
+    }
 
     /**
     * @dev remove a role from an address
