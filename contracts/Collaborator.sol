@@ -125,6 +125,5 @@ contract Collaborator is Ownable, RBAC {
             hasRole(_addressUser, ROLE_COLLABORATOR)            
         );
     }
-
 }
 
