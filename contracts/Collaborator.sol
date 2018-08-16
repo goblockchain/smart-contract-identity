@@ -112,10 +112,10 @@ contract Collaborator is Ownable, RBAC {
 
     /**
     * @dev verify if the current address is a collaborator;
-    * @param addressUser The address to verify
-    * @return isCollaborator return true if the address is a collaborator
+    * @param _addressUser The address to verify
+    * @return _isCollaborator return true if the address is a collaborator
     */
-    function isCollaborator(address _addressUser) public returns(bool _isCollaborator)
+    function isCollaborator(address _addressUser) public view returns(bool _isCollaborator)
     {
         return (
             hasRole(_addressUser, ROLE_ADMIN) ||

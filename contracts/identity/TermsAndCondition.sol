@@ -9,13 +9,22 @@ contract TermsAndCondition is Collaborator {
     string public validHash;
     event TermsAndConditionChanged(address sender, uint256 time, string validHash );
 
+    /**
+    * @dev Set the hash of terms and conditions;
+    * @param _hash The new valid hash
+    */
     function setTermsAndCondition(string _hash) public onlyAdminOrAdvisor {
         hashTerms.push(_hash);
         validHash = _hash;
         emit TermsAndConditionChanged(msg.sender, now, validHash);
     }
 
-    function isValidHash(string _hash) public returns(bool) {
+    /**
+    * @dev verify if current hash is valid with the parameter;
+    * @param _hash The hash sent by collaborator
+    * @return bool return true if the valid hash
+    */
+    function isValidHash(string _hash) public view returns(bool) {
         return validHash.equal(_hash);
     }    
 }
