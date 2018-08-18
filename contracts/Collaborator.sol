@@ -15,6 +15,7 @@ contract Collaborator is Ownable, RBAC {
     string public constant ROLE_COLLABORATOR = "collaborator";
 
     event NewCollaborator(address collaborator);
+    event NewAdvisors(uint8 qtd, address responsable);
 
     /**
     * @dev constructor. Sets msg.sender as admin by default
@@ -76,7 +77,8 @@ contract Collaborator is Ownable, RBAC {
     {
         for (uint256 i = 0; i < _advisors.length; i++) {
             addRole(_advisors[i], ROLE_ADVISOR);
-        }        
+        }
+        emit NewAdvisors(uint8(_advisors.length), msg.sender);
     }
 
     /**

@@ -1,1 +1,0 @@
-//positivo - verificar um endereço é colaborador 
