@@ -80,4 +80,12 @@ contract PersonIdentity is TermsAndCondition {
 
         return (p.sender, p.status);
     }
+
+    /**
+    * @dev Return the total of person
+    * @return uint256  
+    */   
+    function getListPerson() public view returns(uint256[]) {
+        person;
+    }  
 }

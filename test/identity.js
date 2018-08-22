@@ -88,26 +88,8 @@ contract('PersonIdentity', function (accounts) {
     });        
 })
 
+//enviar campos vazios
 
-// contract('TermsAndCondition', function (accounts) {
-//     var terms;
-//     var advisor = accounts[0];
-//     var incorrectColab = accounts[1];    
+// endereços iguais com uport diferente
 
-//     before("Carregar o contrato", async function () {
-//         personIdentity = await PersonIdentity.deployed()
-//     });
-
-//     it("Carregar o contrato", async function () {
-//         console.info(await personIdentity.getValidHash())
-//     });         
-// })
-
-
-// it("Informa o termo e condições", async function () {
-//     await personIdentity.setTermsAndCondition("abc", {
-//         from: advisor
-//     });
-//     console.info(await personIdentity.getValidHash());
-//     (await personIdentity.getValidHash()).should.be.equal("abc");
-// })  
+// verificar se a lista getListPerson bate com a quantidade de colabs adicionado
