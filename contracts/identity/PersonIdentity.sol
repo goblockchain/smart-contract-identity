@@ -20,6 +20,17 @@ contract PersonIdentity is TermsAndCondition {
         string hashTerms;
     }
 
+    constructor() {
+        Person memory p = Person ({
+            sender: msg.sender,
+            hashUport: "",
+            status: Status.APPROVE,
+            hashTerms: ""
+        });
+
+        person.push(p);
+    }
+
     /**
     * @dev Request approve to participate of DAO
     * @param _uPort idPort
@@ -28,10 +39,12 @@ contract PersonIdentity is TermsAndCondition {
     */   
     function requestApprove(string _uPort, string _hashTerms, bool _accepted) external {
         require(_accepted);
-        require(_uPort.stringToBytes32().length > 0);
+        require(_uPort.stringToBytes32() != 0x0);
+        require(_hashTerms.stringToBytes32() != 0x0);
+        require(mapPersonAddress[msg.sender] == 0x0);
         bytes32 hashUportByte32 = _uPort.stringToBytes32();
         require(mapPerson[hashUportByte32].sender == 0x0);
-        // require(!isCollaborator(msg.sender));
+        require(!isCollaborator(msg.sender));
 
         Person memory p = Person ({
             sender: msg.sender,
@@ -51,7 +64,7 @@ contract PersonIdentity is TermsAndCondition {
     * @param _approveOrDisapprove true or false
     */    
     function validate(string _uPort, bool _approveOrDisapprove) external onlyCollaborator(msg.sender) {
-        require(_uPort.stringToBytes32().length > 0);
+        require(_uPort.stringToBytes32() != 0x0);
         bytes32 hashUportByte32 = _uPort.stringToBytes32();
         require(mapPerson[hashUportByte32].sender != 0x0);
         require(mapPerson[hashUportByte32].sender != msg.sender);
@@ -73,7 +86,7 @@ contract PersonIdentity is TermsAndCondition {
     * @return Status    
     */   
     function getPersonByIdUport(string _uPort) view public returns(address, Status) {
-        require(mapPerson[_uPort.stringToBytes32()].sender != 0x0);
+        require(_uPort.stringToBytes32() != 0x0);
         require(mapPerson[_uPort.stringToBytes32()].sender != 0x0);
         bytes32 nameAsBytes = _uPort.stringToBytes32();
         Person memory p = mapPerson[nameAsBytes];

@@ -57,7 +57,7 @@ contract('PersonIdentity', function (accounts) {
         let novoColab = accounts[2];
         let colab = (await personIdentity.getPersonByIdUport(_hashUport));
         let addresss = colab[0];
-        let status = colab[1];
+        let status = colab[1]; 
         (addresss).should.be.equal(novoColab);   
         (status).should.be.bignumber.equal(0);        
     });       
@@ -85,11 +85,39 @@ contract('PersonIdentity', function (accounts) {
         let colab = (await personIdentity.getPersonByIdUport(_hashUport));
         let status = colab[1];
         (status).should.be.bignumber.equal(1);        
-    });        
+    });
+
+    it("O campo uPort deve estar preenchido", async function () {
+        let novoColab = accounts[4];
+        let _hashTerms = "cde";
+        let _accepted = true;
+        await personIdentity.requestApprove("", _hashTerms, _accepted, {from: novoColab}).shouldBeReverted();
+    });  
+
+    it("O campo hashTerms deve estar preenchido", async function () {
+        let novoColab = accounts[5];
+        let _hashUport = "uport";
+        let _accepted = true;
+        await personIdentity.requestApprove(_hashUport, "", _accepted, {from: novoColab}).shouldBeReverted();
+    }); 
+
+    it("Necessário preencher o uPort a ser pesquisado", async function () {
+        await personIdentity.getPersonByIdUport("").shouldBeReverted();         
+    });    
+
+    it("Necessário preencher o uPort do colaborador", async function () {
+        var trueCollaborador = accounts[1];
+        await personIdentity.validate("", true, {from: trueCollaborador}).shouldBeReverted();        
+    });    
+
+    it("Colaborador já possuí uPort cadastrado", async function () {
+        let novoColab = accounts[2];
+        let _hashUport = "newUport";
+        let _hashTerms = "cde";
+        let _accepted = true;
+        await personIdentity.requestApprove(_hashUport, _hashTerms, _accepted, {from: novoColab}).shouldBeReverted();
+    });  
+
 })
-
-//enviar campos vazios
-
-// endereços iguais com uport diferente
 
 // verificar se a lista getListPerson bate com a quantidade de colabs adicionado
