@@ -12,9 +12,12 @@ var PersonIdentity = artifacts.require("PersonIdentity");
 
 contract('PersonIdentity', function (accounts) {
     var advisor = accounts[0];
-    var incorrectColab = accounts[1];    
+    var incorrectColab = accounts[1];
+    var numberOfColabs = 0;
+
     before("Carregar o contrato", async function () {
         personIdentity = await PersonIdentity.deployed()
+        numberOfColabs++;
     });
 
     it("Colaborador deve ser válido", async function () {
@@ -50,6 +53,7 @@ contract('PersonIdentity', function (accounts) {
         let _hashTerms = "cde";
         let _accepted = true;
         await personIdentity.requestApprove(_hashUport, _hashTerms, _accepted, {from: novoColab});
+        numberOfColabs++;
     });    
 
     it("Novo colaborador deve existir como pendente", async function () {
@@ -117,7 +121,10 @@ contract('PersonIdentity', function (accounts) {
         let _accepted = true;
         await personIdentity.requestApprove(_hashUport, _hashTerms, _accepted, {from: novoColab}).shouldBeReverted();
     });  
+    
+    it("Lista de person deve ser igual a quantidade de colaboradores adicionados", async function () {      
+        let personCount = (await personIdentity.getListPerson()).toNumber();
+        (personCount).should.be.equal(numberOfColabs);
+    })
 
 })
-
-// verificar se a lista getListPerson bate com a quantidade de colabs adicionado

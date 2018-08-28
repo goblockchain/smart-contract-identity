@@ -98,7 +98,7 @@ contract PersonIdentity is TermsAndCondition {
     * @dev Return the total of person
     * @return uint256  
     */   
-    function getListPerson() public view returns(uint256[]) {
-        person;
+    function getListPerson() public view returns(uint256) {
+        return person.length;
     }  
 }
