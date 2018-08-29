@@ -11,7 +11,7 @@ contract TermsAndCondition is Collaborator {
     * @dev Set the hash of terms and conditions;
     * @param _hash The new valid hash
     */
-    function setTermsAndCondition(string _hash) public onlyAdminOrAdvisor {
+    function setTermsAndCondition(string _hash) public onlyAdmin {
         hashTerms.push(_hash);
         validHash = _hash;
         emit TermsAndConditionChanged(msg.sender, now, validHash);

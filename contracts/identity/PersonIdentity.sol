@@ -20,12 +20,12 @@ contract PersonIdentity is TermsAndCondition {
         string hashTerms;
     }
 
-    constructor() {
+    constructor() public {
         Person memory p = Person ({
             sender: msg.sender,
             hashUport: "",
             status: Status.APPROVE,
-            hashTerms: ""
+            hashTerms: "0x0"
         });
 
         person.push(p);
@@ -38,13 +38,13 @@ contract PersonIdentity is TermsAndCondition {
     * @param _accepted true or false
     */   
     function requestApprove(string _uPort, string _hashTerms, bool _accepted) external {
-        require(_accepted);
-        require(_uPort.stringToBytes32() != 0x0);
-        require(_hashTerms.stringToBytes32() != 0x0);
-        require(mapPersonAddress[msg.sender] == 0x0);
+        require(_accepted, "Necessary _accepted");
+        require(_uPort.stringToBytes32() != 0x0, "Necessary _uPort");
+        require(_hashTerms.stringToBytes32() != 0x0, "Necessary _hashTerms");
+        require(mapPersonAddress[msg.sender] == 0x0, "Necessary  there isn't  user with the same address");
         bytes32 hashUportByte32 = _uPort.stringToBytes32();
-        require(mapPerson[hashUportByte32].sender == 0x0);
-        require(!isCollaborator(msg.sender));
+        require(mapPerson[hashUportByte32].sender == 0x0, "Necessary there isn't  user with the same address uport");
+        require(!hasRole(msg.sender, ROLE_COLLABORATOR), "Necessary there isn't Collaborator");
 
         Person memory p = Person ({
             sender: msg.sender,
