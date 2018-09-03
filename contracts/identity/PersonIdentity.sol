@@ -2,7 +2,7 @@ pragma solidity 0.4.24;
 
 import "./TermsAndCondition.sol";
 import "../util/StringUtils.sol";
-
+//rinkeby 0xBBe5932a778698F2A8ea826B7A53F1435dBead08
 contract PersonIdentity is TermsAndCondition {
     using StringUtils for string;
     enum Status {PENDING, APPROVE, REJECTED}

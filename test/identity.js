@@ -13,19 +13,20 @@ var PersonIdentity = artifacts.require("PersonIdentity");
 contract('PersonIdentity', function (accounts) {
     var advisor = accounts[0];
     var incorrectColab = accounts[1];
+    var ROLE_ADMIN = "admin";
+    var ROLE_COLLABORATOR = "collaborator";
     var numberOfColabs = 0;
-
     before("Carregar o contrato", async function () {
         personIdentity = await PersonIdentity.deployed()
-        numberOfColabs++;
     });
 
     it("Colaborador deve ser válido", async function () {
-        (await personIdentity.isCollaborator(advisor)).should.be.equal(true);
+        (await personIdentity.hasRole(advisor, ROLE_ADMIN)).should.be.equal(true);
+        numberOfColabs++;
     });
 
     it("Colaborador deve ser inválido", async function () {
-        (await personIdentity.isCollaborator(incorrectColab)).should.be.equal(false);
+        (await personIdentity.hasRole(incorrectColab, ROLE_ADMIN)).should.be.equal(false);
     });  
 
     it("Termo de adesão deve ser válido", async function () {
@@ -41,19 +42,12 @@ contract('PersonIdentity', function (accounts) {
         (await personIdentity.getValidHash()).should.be.equal("cde");
     });    
 
-    it("Deve permitir a inserção de membros ao conselho", async function () {
-        var advisors = [accounts[1]];
-        await personIdentity.addAdvisors(advisors, {from: advisor});
-        (await personIdentity.isCollaborator(accounts[1])).should.be.equal(true);
-    });
-
     it("Deve permitir a solicitação de aprovação para colaborador", async function () {
         let novoColab = accounts[2];
         let _hashUport = "uport";
         let _hashTerms = "cde";
         let _accepted = true;
         await personIdentity.requestApprove(_hashUport, _hashTerms, _accepted, {from: novoColab});
-        numberOfColabs++;
     });    
 
     it("Novo colaborador deve existir como pendente", async function () {
@@ -80,8 +74,9 @@ contract('PersonIdentity', function (accounts) {
 
     it("Deve realizar a aprovação do novo colaborador", async function () {
         let _hashUport = "uport";
-        var trueCollaborador = accounts[1];
+        var trueCollaborador = accounts[0];
         await personIdentity.validate(_hashUport, true, {from: trueCollaborador});
+        numberOfColabs++;
     });     
     
     it("Deve novo colaborador estar aprovado", async function () {

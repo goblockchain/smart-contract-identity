@@ -1,9 +1,8 @@
 pragma solidity ^0.4.23;
 
 import "./zeppelin/ownership/rbac/RBAC.sol";
-import "./Reputation.sol";
 
-contract Collaborator is Reputation, RBAC {
+contract Collaborator is RBAC {
     
     /**
     * A constant role name for indicating admins.
@@ -12,13 +11,13 @@ contract Collaborator is Reputation, RBAC {
     string public constant ROLE_COLLABORATOR = "collaborator";
 
     event NewCollaborator(address collaborator);
-    event NewAdvisors(uint8 qtd, address responsable);
 
     /**
     * @dev constructor. Sets msg.sender as admin by default
     */
     constructor() public {
         addRole(msg.sender, ROLE_ADMIN);
+        addRole(msg.sender, ROLE_COLLABORATOR);
     }
 
     /**
