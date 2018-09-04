@@ -95,10 +95,18 @@ contract PersonIdentity is TermsAndCondition {
     }
 
     /**
+    * @dev Return if the address is a collaborator
+    * @return bool  
+    */   
+    function isCollaborator(address _addressColab) public view returns(bool) {
+        return mapPersonAddress[_addressColab] != 0x0;
+    }  
+
+    /**
     * @dev Return the total of person
     * @return uint256  
-    */   
-    function getListPerson() public view returns(uint256) {
+    */
+    function getTotalListPerson() public view returns(uint256) {
         return person.length;
     }  
 }

@@ -118,7 +118,7 @@ contract('PersonIdentity', function (accounts) {
     });  
     
     it("Lista de person deve ser igual a quantidade de colaboradores adicionados", async function () {      
-        let personCount = (await personIdentity.getListPerson()).toNumber();
+        let personCount = (await personIdentity.getTotalListPerson()).toNumber();
         (personCount).should.be.equal(numberOfColabs);
     })
 
