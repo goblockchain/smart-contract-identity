@@ -9,11 +9,11 @@ Um perfil específico da organização pode aprovar ou recusar, é necessário n
 
 ## Entidades
 
->> PersonIdentity.sol contém as funções para adicionar uma solicitação de participação e para aprovar ou recusar as solicitações.
+> PersonIdentity.sol contém as funções para adicionar uma solicitação de participação e para aprovar ou recusar as solicitações.
 
->> Collaborator.sol contém todos os colaboradores e seu o perfil de acordo com sua a reputação.
+> Collaborator.sol contém todos os colaboradores e seu o perfil de acordo com sua a reputação.
 
->> TermsAndCondition.sol contém o hash atual do termo e condição da organização.
+> TermsAndCondition.sol contém o hash atual do termo e condição da organização.
 
 ## Instalação
 ```
