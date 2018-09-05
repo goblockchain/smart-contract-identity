@@ -12,7 +12,7 @@ var PersonIdentity = artifacts.require("PersonIdentity");
 
 contract('PersonIdentity', function (accounts) {
     var advisor = accounts[0];
-    var incorrectColab = accounts[1];
+    var incorrectColab = accounts[5];
     var ROLE_ADMIN = "admin";
     var ROLE_COLLABORATOR = "collaborator";
     var numberOfColabs = 0;
@@ -20,10 +20,18 @@ contract('PersonIdentity', function (accounts) {
         personIdentity = await PersonIdentity.deployed()
     });
 
-    it("Colaborador deve ser válido", async function () {
+    it("Colaborador deve ser válido com hasRole", async function () {
         (await personIdentity.hasRole(advisor, ROLE_ADMIN)).should.be.equal(true);
         numberOfColabs++;
     });
+
+    it("Colaborador deve ser válido com isCollaborator", async function () {
+        (await personIdentity.isCollaborator(advisor)).should.be.equal(true);
+    });
+
+    it("Colaborador deve ser inválido com isCollaborator", async function () {
+        (await personIdentity.isCollaborator(accounts[4])).should.be.equal(false);
+    });    
 
     it("Colaborador deve ser inválido", async function () {
         (await personIdentity.hasRole(incorrectColab, ROLE_ADMIN)).should.be.equal(false);

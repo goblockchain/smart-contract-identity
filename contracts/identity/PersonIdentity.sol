@@ -20,14 +20,16 @@ contract PersonIdentity is TermsAndCondition {
         string hashTerms;
     }
 
-    constructor() public {
+    constructor(string _uPort) public {
+        bytes32 hashUportByte32 = _uPort.stringToBytes32();
         Person memory p = Person ({
             sender: msg.sender,
-            hashUport: "",
+            hashUport: _uPort,
             status: Status.APPROVE,
             hashTerms: "0x0"
         });
-
+        mapPerson[hashUportByte32] = p;
+        mapPersonAddress[msg.sender] = hashUportByte32;
         person.push(p);
     }
 
@@ -52,7 +54,6 @@ contract PersonIdentity is TermsAndCondition {
             status: Status.PENDING,
             hashTerms: _hashTerms
         });
-        person.push(p);
         mapPerson[hashUportByte32] = p;
         mapPersonAddress[msg.sender] = hashUportByte32;
         emit RequestPerson(_uPort);
@@ -64,15 +65,16 @@ contract PersonIdentity is TermsAndCondition {
     * @param _approveOrDisapprove true or false
     */    
     function validate(string _uPort, bool _approveOrDisapprove) external onlyCollaborator(msg.sender) {
-        require(_uPort.stringToBytes32() != 0x0);
+        require(_uPort.stringToBytes32() != 0x0, "Necessary _uPort");
         bytes32 hashUportByte32 = _uPort.stringToBytes32();
-        require(mapPerson[hashUportByte32].sender != 0x0);
-        require(mapPerson[hashUportByte32].sender != msg.sender);
-        require(mapPerson[hashUportByte32].status == Status.PENDING);
+        require(mapPerson[hashUportByte32].sender != 0x0, "Necessary valid _uPort");
+        require(mapPerson[hashUportByte32].sender != msg.sender, "Is necessary another account validate");
+        require(mapPerson[hashUportByte32].status == Status.PENDING, "Status is not equal Pending");
 
         if (_approveOrDisapprove) {
             mapPerson[hashUportByte32].status = Status.APPROVE;
             addCollaborator(mapPerson[hashUportByte32].sender);
+            person.push(mapPerson[hashUportByte32]);
         } else {
             mapPerson[hashUportByte32].status = Status.REJECTED;
         }
@@ -85,9 +87,9 @@ contract PersonIdentity is TermsAndCondition {
     * @return address
     * @return Status    
     */   
-    function getPersonByIdUport(string _uPort) view public returns(address, Status) {
-        require(_uPort.stringToBytes32() != 0x0);
-        require(mapPerson[_uPort.stringToBytes32()].sender != 0x0);
+    function getPersonByIdUport(string _uPort) public view returns(address, Status) {
+        require(_uPort.stringToBytes32() != 0x0, "Necessary _uPort");
+        require(mapPerson[_uPort.stringToBytes32()].sender != 0x0, "Necessary valid _uPort");
         bytes32 nameAsBytes = _uPort.stringToBytes32();
         Person memory p = mapPerson[nameAsBytes];
 
